@@ -1,21 +1,22 @@
+--Initialization
 display.setDefault( "background", 0, 0.3, 0.8 )
-
 local physics = require("physics")
 physics.start()
 physics.setGravity( 0, 50 )
 
-local function startGame()
+--Starts the game
+function StartGame()
+local CS = NumericField.text
 local score = 0
-display.remove(Button)
+display.remove(StartButton)
+display.remove(NumericField)
+display.remove(SettingsText)
 
-local Starter = display.newCircle( 900, 600, 30)
-physics.addBody( Starter, "static")
-Starter:setFillColor( 0.5 )
+local ResetButton = display.newCircle(1100, 720, 30)
+physics.addBody( ResetButton, "static")
+ResetButton:setFillColor( 0.5 )
 
-  local xCoord = math.random( 100, 900 )
-  local yCoord = math.random( 100, 600 )
-  Circle = display.newCircle( 500, 300, 20)
---physics.addBody( circle, "static")
+Circle = display.newCircle( 500, 300, 160/CS);
 
 Instructions = display.newText( "Tap the bottom right button to reset", display.contentCenterX, 40, native.systemFont, 28 )
 Instructions:setFillColor( 1 )
@@ -27,8 +28,8 @@ end
 
 local function accurate()
   if Cooldown == false then
-    local xCoord = math.random( 100, 900 )
-    local yCoord = math.random( 100, 500 )
+    local xCoord = math.random( 20, 1000 )
+    local yCoord = math.random( 100, 650 )
     transition.to( Circle, { time=0, x=xCoord, y=yCoord } )
     score = score + 1
     display.remove(Score)
@@ -38,22 +39,31 @@ local function accurate()
   timer.performWithDelay(200, endCooldown);
 end
 
-local function reset()
+function Reset()
   score = 0
   display.remove(Circle);
-  display.remove(Starter);
+  display.remove(ResetButton);
   display.remove(Instructions);
   display.remove(Score);
-  startGame();
+  StartScreen();
 end
 
-Starter:addEventListener( "touch", reset)
+ResetButton:addEventListener( "touch", Reset)
 Circle:addEventListener( "touch", accurate)
 
 end
-Cooldown = false;
-Button = display.newImage( "Capture.png", 500, 200)
-Button:addEventListener("touch", startGame)
 
---local startButton = display.newRect(parent,x,y,width,height);
---local button = widget.newButton(options);
+function StartScreen()
+  StartButton = display.newImage( "Capture.png", 500, 200)
+  StartButton:addEventListener("touch", StartGame)
+  NumericField = native.newTextField( 500, 400, 100, 50 )
+  NumericField.inputType = "decimal";
+  SettingsText = display.newText( "CircleSize:", 300, 400, native.systemFont, 28 )
+end
+
+Cooldown = false;
+StartButton = display.newImage( "Capture.png", 500, 200)
+StartButton:addEventListener("touch", StartGame)
+NumericField = native.newTextField( 500, 400, 100, 50 )
+NumericField.inputType = "decimal";
+SettingsText = display.newText( "CircleSize:", 300, 400, native.systemFont, 28 )
