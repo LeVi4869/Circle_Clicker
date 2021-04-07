@@ -5,4 +5,4 @@ Simply tap the circles to gain points. Accuracy also affects your score.
 
 Updates will come when I have more time.
 
-Any opinions/contribution is greatly appreciated
+Any opinions/contribution is greatly appreciated.
