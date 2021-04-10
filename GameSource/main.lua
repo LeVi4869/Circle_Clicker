@@ -34,7 +34,7 @@ function StartGame()
     end
   end
 
-  Clicks = -1;
+  Clicks = 0;
   Hits = 0;
 
   Accuracy = string.format( "0.00" )
@@ -43,20 +43,23 @@ function StartGame()
     ClickCooldown = false;
   end
 
-  local function OnMouseEvent()
-    if InGame == true then
-      if ClickCooldown == false then
-        Clicks = Clicks + 1;
-        display.remove(AccuracyText);
-        if Clicks == 0 then
-          Accuracy = string.format( "100.00" )
-        else
-          Accuracy = string.format( "%.2f", (Hits/Clicks)*100 )
-        end
-        AccuracyText = display.newText( Accuracy, 800, 90, native.systemFont, 40 )
-        ClickCooldown = true;
+  local function OnMouseEvent(event)
+    if (event.phase == "began") then
+        if InGame == true then
+          if ClickCooldown == false then
+            Clicks = Clicks + 1;
+            display.remove(AccuracyText);
+            if Clicks == 0 then
+              Accuracy = string.format( "100.00" )
+            else
+              Accuracy = string.format( "%.2f", (Hits/Clicks)*100 )
+            end
+            AccuracyText = display.newText( Accuracy, 800, 90, native.systemFont, 40 )
+            ClickCooldown = true;
+          end
       end
-      timer.performWithDelay(100, endClickCooldown);
+    elseif (event.phase == "ended") then
+    endClickCooldown();
     end
   end
               
@@ -82,12 +85,9 @@ function StartGame()
   Instructions:setFillColor( 1 )
   Score = display.newText( score, 900, 40, native.systemFont, 28 )
 
-  local function endAccurateCooldown()
-    AccurateCooldown = false;
-  end
 
   local function accurate()
-    if AccurateCooldown == false then
+    if ClickCooldown == false then
       local xCoord = math.random( 60, 960 )
       local yCoord = math.random( 150, 650 )
       transition.to( Circle, { time=0, x=xCoord, y=yCoord } )
@@ -95,9 +95,7 @@ function StartGame()
       Hits = Hits + 1;
       display.remove(Score)
       Score = display.newText( score, 900, 40, native.systemFont, 28 )
-      AccurateCooldown = true;
     end
-    timer.performWithDelay(100, endAccurateCooldown);
   end
 
   function ScoreScreen()  
@@ -109,11 +107,14 @@ function StartGame()
     display.remove(ClockText);
     display.remove(AccuracyText);
     InGame = false;
-    local result = string.format( "Final Score: %02d", score )
+    local result = string.format( "Hits: %02d", score )
     ResultScoreText = display.newText( result, display.contentCenterX, 200, native.systemFont, 50 )
     local resultAcc = string.format("Accuracy: %s", Accuracy)
     ResultAccText = display.newText( resultAcc, display.contentCenterX, 300, native.systemFont, 50 )
-    MenuButton = display.newImage("Menu_Button.png", display.contentCenterX, 400);
+    local res_points = (Hits/Clicks) * 1000 * score;
+    local resultPoints = string.format("Final Score: %d", res_points);
+    ResultPointsText = display.newText( resultPoints, display.contentCenterX, 400, native.systemFont, 50 )
+    MenuButton = display.newImage("Menu_Button.png", display.contentCenterX, 500);
     MenuButton:addEventListener("touch", StartScreen)
   end
 
@@ -134,13 +135,21 @@ function StartGame()
 
 end
 
+function Start(event)  
+  if (event.phase == "began") then
+  elseif (event.phase == "ended") then
+    StartGame();
+  end
+end
+
 function StartScreen()
   display.remove(ResultScoreText);
   display.remove(ResultAccText);
+  display.remove(ResultPointsText);
   display.remove(MenuButton);
   InGame = false;
   StartButton = display.newImage( "Capture.png", 500, 200)
-  StartButton:addEventListener("touch", StartGame)
+  StartButton:addEventListener("touch", Start)
   CSField = native.newTextField( 500, 400, 100, 50 )
   CSField.inputType = "decimal";
   CSText = display.newText( "CircleSize:", 300, 400, native.systemFont, 28 )
@@ -150,7 +159,7 @@ function StartScreen()
 end
 
 StartButton = display.newImage( "Capture.png", 500, 200)
-  StartButton:addEventListener("touch", StartGame)
+  StartButton:addEventListener("touch", Start)
   CSField = native.newTextField( 500, 400, 100, 50 )
   CSField.inputType = "decimal";
   CSText = display.newText( "CircleSize:", 300, 400, native.systemFont, 28 )
