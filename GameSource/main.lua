@@ -1,10 +1,10 @@
 --Initialization
-display.setDefault( "background", 0, 0.3, 0.8 )
 local physics = require("physics")
 physics.start()
 physics.setGravity( 0, 50 )
 --Starts the game
 function StartGame()
+  display.setDefault( "background", 0, 0, 0 )
   InGame = true;
   local secondsLeft = TimerField.text  -- 10 minutes * 60 seconds
   secondsLeft = secondsLeft - 1
@@ -99,6 +99,7 @@ function StartGame()
   end
 
   function ScoreScreen()  
+    display.setDefault( "background", 0, 0.3, 0.8 )
     display.remove(Circle);
     display.remove(ResetButton);
     display.remove(Instructions);
@@ -143,6 +144,7 @@ function Start(event)
 end
 
 function StartScreen()
+  display.setDefault( "background", 0, 0.3, 0.8 )
   display.remove(ResultScoreText);
   display.remove(ResultAccText);
   display.remove(ResultPointsText);
@@ -157,7 +159,7 @@ function StartScreen()
   TimerField.inputType = "decimal";
   TimerText = display.newText( "Time Allowed:", 300, 500, native.systemFont, 28 )
 end
-
+display.setDefault( "background", 0, 0.3, 0.8 )
 StartButton = display.newImage( "Capture.png", 500, 200)
   StartButton:addEventListener("touch", Start)
   CSField = native.newTextField( 500, 400, 100, 50 )
