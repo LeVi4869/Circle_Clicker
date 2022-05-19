@@ -38,7 +38,26 @@ function StartGame()
   Hits = 0;
 
   Accuracy = string.format( "0.00" )
-  
+
+  CountDownTimer = timer.performWithDelay( 1000, UpdateTime, secondsLeft )
+  local CS = CSField.text
+  score = 0
+  display.remove(StartButton)
+  display.remove(CSField)
+  display.remove(CSText)
+  display.remove(TimerField)
+  display.remove(TimerText)
+
+  local ResetButton = display.newCircle(970, 700, 30)
+  physics.addBody( ResetButton, "static")
+  ResetButton:setFillColor( 0.5 )
+
+  Circle = display.newCircle( 500, 300, 160/CS);
+
+  Instructions = display.newText( "Tap the bottom right button to reset", display.contentCenterX, 40, native.systemFont, 28 )
+  Instructions:setFillColor( 1 )
+  Score = display.newText( score, 900, 40, native.systemFont, 28 )
+
   local function endClickCooldown()
     ClickCooldown = false;
   end
@@ -66,32 +85,12 @@ function StartGame()
   -- Add the mouse event listener.
   Runtime:addEventListener("touch", OnMouseEvent )
 
-  CountDownTimer = timer.performWithDelay( 1000, UpdateTime, secondsLeft )
-  local CS = CSField.text
-  local score = 0
-  display.remove(StartButton)
-  display.remove(CSField)
-  display.remove(CSText)
-  display.remove(TimerField)
-  display.remove(TimerText)
-
-  local ResetButton = display.newCircle(970, 700, 30)
-  physics.addBody( ResetButton, "static")
-  ResetButton:setFillColor( 0.5 )
-
-  Circle = display.newCircle( 500, 300, 160/CS);
-
-  Instructions = display.newText( "Tap the bottom right button to reset", display.contentCenterX, 40, native.systemFont, 28 )
-  Instructions:setFillColor( 1 )
-  Score = display.newText( score, 900, 40, native.systemFont, 28 )
-
-
   local function accurate()
     if ClickCooldown == false then
       local xCoord = math.random( 60, 960 )
       local yCoord = math.random( 150, 650 )
       transition.to( Circle, { time=0, x=xCoord, y=yCoord } )
-      score = score + 1
+      score = score + 1000;
       Hits = Hits + 1;
       display.remove(Score)
       Score = display.newText( score, 900, 40, native.systemFont, 28 )
@@ -112,7 +111,7 @@ function StartGame()
     ResultScoreText = display.newText( result, display.contentCenterX, 200, native.systemFont, 50 )
     local resultAcc = string.format("Accuracy: %s", Accuracy)
     ResultAccText = display.newText( resultAcc, display.contentCenterX, 300, native.systemFont, 50 )
-    local res_points = (Hits/Clicks) * 1000 * score;
+    local res_points = (Hits/Clicks) * score;
     local resultPoints = string.format("Final Score: %d", res_points);
     ResultPointsText = display.newText( resultPoints, display.contentCenterX, 400, native.systemFont, 50 )
     MenuButton = display.newImage("Menu_Button.png", display.contentCenterX, 500);
