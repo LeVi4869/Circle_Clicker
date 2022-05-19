@@ -36,12 +36,15 @@ function StartGame()
 
   Clicks = 0;
   Hits = 0;
+  score = 0;
+  currCombo = 0;
+  ClickHitDifference = 0;
 
   Accuracy = string.format( "0.00" )
 
   CountDownTimer = timer.performWithDelay( 1000, UpdateTime, secondsLeft )
   local CS = CSField.text
-  score = 0
+  
   display.remove(StartButton)
   display.remove(CSField)
   display.remove(CSText)
@@ -67,6 +70,9 @@ function StartGame()
         if InGame == true then
           if ClickCooldown == false then
             Clicks = Clicks + 1;
+            if (Clicks - Hits > ClickHitDifference) then
+              currCombo = 0;
+            end
             display.remove(AccuracyText);
             if Clicks == 0 then
               Accuracy = string.format( "100.00" )
@@ -90,7 +96,8 @@ function StartGame()
       local xCoord = math.random( 60, 960 )
       local yCoord = math.random( 150, 650 )
       transition.to( Circle, { time=0, x=xCoord, y=yCoord } )
-      score = score + 1000;
+      currCombo = currCombo + 1;
+      score = score + currCombo * 727;
       Hits = Hits + 1;
       display.remove(Score)
       Score = display.newText( score, 900, 40, native.systemFont, 28 )
@@ -107,7 +114,7 @@ function StartGame()
     display.remove(ClockText);
     display.remove(AccuracyText);
     InGame = false;
-    local result = string.format( "Hits: %02d", score )
+    local result = string.format( "Hits: %02d", Hits )
     ResultScoreText = display.newText( result, display.contentCenterX, 200, native.systemFont, 50 )
     local resultAcc = string.format("Accuracy: %s", Accuracy)
     ResultAccText = display.newText( resultAcc, display.contentCenterX, 300, native.systemFont, 50 )
