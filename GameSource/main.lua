@@ -156,7 +156,7 @@ function StartScreen()
   display.remove(ResultPointsText);
   display.remove(MenuButton);
   InGame = false;
-  StartButton = display.newImage( "Capture.png", 500, 200)
+  StartButton = display.newImage( "Start_Button.png", 500, 200)
   StartButton:addEventListener("touch", Start)
   CSField = native.newTextField( 500, 400, 100, 50 )
   CSField.inputType = "decimal";
@@ -166,7 +166,7 @@ function StartScreen()
   TimerText = display.newText( "Time Allowed:", 300, 500, native.systemFont, 28 )
 end
 display.setDefault( "background", 0, 0.3, 0.8 )
-StartButton = display.newImage( "Capture.png", 500, 200)
+StartButton = display.newImage( "Start_Button.png", 500, 200)
   StartButton:addEventListener("touch", Start)
   CSField = native.newTextField( 500, 400, 100, 50 )
   CSField.inputType = "decimal";
