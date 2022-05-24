@@ -165,12 +165,13 @@ function StartScreen()
   TimerField.inputType = "decimal";
   TimerText = display.newText( "Time Allowed:", 300, 500, native.systemFont, 28 )
 end
+
 display.setDefault( "background", 0, 0.3, 0.8 )
 StartButton = display.newImage( "Start_Button.png", 500, 200)
-  StartButton:addEventListener("touch", Start)
-  CSField = native.newTextField( 500, 400, 100, 50 )
-  CSField.inputType = "decimal";
-  CSText = display.newText( "CircleSize:", 300, 400, native.systemFont, 28 )
-  TimerField = native.newTextField( 500, 500, 100, 50 )
-  TimerField.inputType = "decimal";
-  TimerText = display.newText( "Time Allowed:", 300, 500, native.systemFont, 28 )
+StartButton:addEventListener("touch", Start)
+CSField = native.newTextField( 500, 400, 100, 50 )
+CSField.inputType = "decimal";
+CSText = display.newText( "CircleSize:", 300, 400, native.systemFont, 28 )
+TimerField = native.newTextField( 500, 500, 100, 50 )
+TimerField.inputType = "decimal";
+TimerText = display.newText( "Time Allowed:", 300, 500, native.systemFont, 28 )
