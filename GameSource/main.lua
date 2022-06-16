@@ -43,7 +43,7 @@ function StartGame()
   Accuracy = string.format( "0.00" )
 
   CountDownTimer = timer.performWithDelay( 1000, UpdateTime, secondsLeft )
-  local CS = CSField.text
+  CS = CSField.text
   
   display.remove(StartButton)
   display.remove(CSField)
@@ -97,7 +97,7 @@ function StartGame()
       local yCoord = math.random( 150, display.contentHeight - 100 )
       transition.to( Circle, { time=0, x=xCoord, y=yCoord } )
       currCombo = currCombo + 1;
-      score = score + currCombo * 727;
+      score = score + currCombo * 727 * CS;
       Hits = Hits + 1;
       display.remove(Score)
       Score = display.newText( score, 900, 40, native.systemFont, 28 )
